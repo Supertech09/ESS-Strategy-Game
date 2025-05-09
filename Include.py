@@ -5,6 +5,12 @@ global TurnNumber
 TurnNumber = 0
 global Turn
 Turn = 1
+
+BLACK = ( 0, 0, 0)
+WHITE = (255, 255, 255)
+GREEN = (0, 255, 0)
+RED = ( 255, 0, 0)
+
 def GameInit():
     global GameDisplay
     global Titlefont

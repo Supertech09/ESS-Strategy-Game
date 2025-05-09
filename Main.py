@@ -2,9 +2,8 @@ import pygame as pygame
 import matplotlib as mpl
 #import Include as include
 import time
+import random
 
-from sympy import false
-from sympy import true
 # from Include import Player
 from Include import GameInit
 from Include import TurnNumber
