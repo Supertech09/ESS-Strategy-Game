@@ -1,6 +1,5 @@
 import pygame as pygame
 import matplotlib as mpl
-import pyglet as pyglet
   # Initialize TurnNumber
 global TurnNumber
 TurnNumber = 0
@@ -17,21 +16,13 @@ def GameInit():
     pygame.display.set_caption("Earth Strategy")
     pygame.font.init()
     Titlefont = pygame.font.SysFont('Arial', 50, (0, 0, 0))
-
 def TurnCounter():
-    Turn = 1
-    TurnNumber = 1
+    global TurnNumber
+    global Turn
     TurnNumber = TurnNumber + 1
     if TurnNumber%2 == 0:
         Turn = 2
     else:
         Turn = 1
 
-        
-    
-
-class Player:
-    def __init__(self, Team, Turn):
-        self.Team = Team
-        self.Turn = Turn
 
