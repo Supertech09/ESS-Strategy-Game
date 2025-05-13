@@ -21,7 +21,8 @@ def GameInit():
     GameDisplay = pygame.display.set_mode((800, 600), pygame.RESIZABLE)
     pygame.display.set_caption("Earth Strategy")
     pygame.font.init()
-    Titlefont = pygame.font.SysFont('Arial', 50, (0, 0, 0))
+    Titlefont = pygame.font.SysFont("Arial", 50)
+    testfont = pygame.font.SysFont("mono", 20)
 def TurnCounter():
     global TurnNumber
     global Turn

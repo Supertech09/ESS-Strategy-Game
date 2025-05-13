@@ -3,7 +3,9 @@ import pygame as pygame
 import matplotlib as mpl
 import time
 
-testfont = pygame.font.SysFont("mono", 25, (0, 0, 0))
+pygame.init()
+#pygame.font.init()
+#testfont = pygame.font.SysFont("mono", 25)
 
 
 
