@@ -1,73 +1,118 @@
 import pygame as pygame
-import matplotlib as mpl
-#import Include as include
 import time
 import random
+from Include import GameInit, TurnNumber, Turn, TurnCounter
+import Cards
 
-# from Include import Player
-from Include import GameInit
-from Include import TurnNumber
-from Include import Turn
-from Include import TurnCounter
+
 
 class Player:
     def __init__(self, Team, Cards, Points):
         self.Team = Team
         self.Cards = Cards
         self.Points = Points
-BLACK = ( 0, 0, 0)
+    def GetCards(self):
+        if Team == "Enviroment":
+            for draw in range(3):
+                Card = random.randint(1, 10)
+
+
+
+
+            
+
+BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
-RED = ( 255, 0, 0)
-GameInit = GameInit()
+RED = (255, 0, 0)
+
+pygame.init()
+pygame.font.init()  # Ensure font module is initialized
+
+GameInit = GameInit()  # Initialize the game (ensure this doesn't conflict with pygame.init())
 global Game
 Game = False
+global TeamSelect
+TeamSelect = False
 
 GameDisplay = pygame.display.set_mode((1000, 750), pygame.RESIZABLE)
-Player1 = Player("Enviroment", 1,0)
-Bot = Player("Industry", 0, 0)
+Player1 = Player("None", 1, 0)
+Bot = Player("None", 0, 0)
 
-testfont = pygame.font.SysFont('Monospaced', 25, ( 0, 0, 0))
+
+testfont = pygame.font.SysFont("mono", 20)
+
+
+# Load and scale images
 TitleScreen = pygame.image.load('Title Screen Layout.png')
 TitleScreen = pygame.transform.scale(TitleScreen, (1000, 750))
+TeamSelectScreen = pygame.image.load('TeamSelect.png')
+TeamSelectScreen = pygame.transform.scale(TeamSelectScreen, (1000, 750))
 gamesurface = pygame.image.load('Background Test.png')
 gamesurface = pygame.transform.scale(gamesurface, (1000, 750))
 
-TurnNumber = TurnNumber  # Ensure TurnNumber is a callable function or class
-Turn = Turn  # Ensure Turn is a callable function or class
-TurnCounter = TurnCounter  # Ensure TurnCounter is a callable function or class
+# Buttons
+teambutton = pygame.Rect(323, 298, 288, 94)  # Rect for the team area
+playbutton = pygame.Rect(323, 413, 288, 100)  # Rect for the play area
+cardbutton = pygame.Rect(323, 530, 288, 100)  # Rect for the card area
+exitbutton = pygame.Rect(990, 730, 50, 50)  # Rect for the exit area
+EnviromentTeam = pygame.Rect(0, 0, 500, 750)  # Rect for the Enviroment team
+IndustryTeam = pygame.Rect(500, 0, 1000, 750)  # Rect for the Industry team
 
-teambutton = pygame.Rect(323, 298, 288, 94)  #rect for the team area
-playbutton = pygame.Rect(323, 413, 288, 100) #rect for the play area
-cardbutton = pygame.Rect(323, 530, 288, 100) #rect for the card area
-
-GameInit # type: ignore
-while(True):
-    if Game == False:
+while True:
+    if not Game and not TeamSelect:
         GameDisplay.blit(TitleScreen, (0, 0))
         pygame.display.update()
-        pygame.display.flip()
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
-                    if event.button == 1:  # Left mouse button.
-                        # Check if the rect collides with the mouse pos.
-                        if teambutton.collidepoint(event.pos):
-                            print('Team Select clicked.')
+                if event.button == 1:  # Left mouse button
+                    if teambutton.collidepoint(event.pos):
+                        print('Team Select clicked.')
+                        TeamSelect = True
+                    elif playbutton.collidepoint(event.pos):
+                        print('Play clicked.')
+                        if Player1.Team == "None":
+                            Team = random.randint(1, 2)
+                            if Team == 1:
+                                Player1.Team = "Enviroment"
+                                Bot.Team = "Industry"
+                            elif Team == 2:
+                                Player1.Team = "Industry"
+                                Bot.Team = "Enviroment"
+                        Game = True
+                    elif cardbutton.collidepoint(event.pos):
+                        print('Cards clicked.')
 
-
-                        elif playbutton.collidepoint(event.pos):
-                            print('Play clicked.')
-                            Game = True
-
-                        elif cardbutton.collidepoint(event.pos):
-                            print('Cards clicked.')
-
-
-    for event in pygame.event.get():
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_ESCAPE:
-                pygame.quit()
-                exit()
+    if TeamSelect:
+        GameDisplay.fill(WHITE)
+        GameDisplay.blit(TeamSelectScreen, (0, 0))
+        pygame.display.update()
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    if EnviromentTeam.collidepoint(event.pos):
+                        print('Enviroment Team selected.')
+                        Player1.Team = "Enviroment"
+                        Bot.Team = "Industry"
+                        Game = True
+                        TeamSelect = False
+                    elif IndustryTeam.collidepoint(event.pos):
+                        print('Industry Team selected.')
+                        Player1.Team = "Industry"
+                        Bot.Team = "Enviroment"
+                        Game = True
+                        TeamSelect = False
+    if Game:
+        GameDisplay.fill(WHITE)  # Clear the screen before rendering
+        GameDisplay.blit(gamesurface, (0, 0))
+        Player1Display = testfont.render(f"You: {Player1.Team}", True, BLACK)
+        Player2Display = testfont.render(f"Bot: {Bot.Team}", True, BLACK)
+        TurnDisplay = testfont.render(f"Turn: {Turn}", True, BLACK)
+        GameDisplay.blit(Player1Display, (5, 250))
+        GameDisplay.blit(Player2Display, (5, 300))
+        GameDisplay.blit(TurnDisplay, (5, 350))
+        pygame.draw.rect(GameDisplay, RED, exitbutton)
+        for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
@@ -77,22 +122,19 @@ while(True):
                     exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:  # Left mouse button
-                    print("Left mouse button clicked at", event.pos)
-                elif event.button == 3:  # Right mouse button
-                    print("Right mouse button clicked at", event.pos)
-
-    
-    if Game == True:
-        GameDisplay.blit(gamesurface, (0, 0))
-        Player1Display = testfont.render( "You: %a" %Player1.Team, False, (0, 0, 0))
-        Player2Display = testfont.render("Bot: %a" %Bot.Team, False, (0, 0, 0))
-        TurnDisplay = testfont.render("Turn: %a" %Turn, False, (0, 0, 0))
-        GameDisplay.blit(Player1Display, (10, 250))
-        GameDisplay.blit(Player2Display, (10, 300))
-        GameDisplay.blit(TurnDisplay, (10, 350))
+                    if exitbutton.collidepoint(event.pos):
+                        print('Exit clicked.')
+                        Game = False
         pygame.display.update()
-        pygame.display.flip()
-    GameDisplay.fill((255,255,255))
-    TurnCounter()
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            exit()
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                pygame.quit()
+                exit()
+
 
 
