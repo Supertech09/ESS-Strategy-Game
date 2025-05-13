@@ -15,6 +15,12 @@ class Player:
         self.Team = Team
         self.Cards = Cards
         self.Points = Points
+    def GetCards(self):
+        if Team == "Enviroment":
+            self.Cards = random.sample(Cards.EnviromentCardList, 3)
+        elif Team == "Industry":
+            self.Cards = random.sample(Cards.IndustryCardList, 3)
+        return self.Cards
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -111,6 +117,17 @@ while True:
                     if exitbutton.collidepoint(event.pos):
                         print('Exit clicked.')
                         Game = False
+
+
+    #Game logic
+    if Game == True:
+        Player1.GetCards()
+        Bot.GetCards()
+        print(f"Player 1 Cards: {Player1.Cards}")
+        print(f"Bot Cards: {Bot.Cards}")
+        TurnCounter()
+
+
 
     # Render the appropriate screen
     if not Game and not TeamSelect:
