@@ -48,13 +48,11 @@ def activate_card_effect(card):
     # Example: apply card's multipliers or other effects
     global NitrogenMultiplier, CarbonMultiplier, PhosphorusMultiplier, Nitrogen, Phosphorus, Carbon, Pollution, NitrogenFixation
     if hasattr(card, "NitrogenMultiplier"):
-        NitrogenMultiplier *= card.NitrogenMultiplier
+        NitrogenMultiplier += card.NitrogenMultiplier
     if hasattr(card, "PhosphorusMultiplier"):
-        PhosphorusMultiplier *= card.PhosphorusMultiplier
+        PhosphorusMultiplier += card.PhosphorusMultiplier
     if hasattr(card, "CarbonMultiplier"):
-        CarbonMultiplier *= card.CarbonMultiplier
-    # ...handle other effects as needed...
-    
+        CarbonMultiplier += card.CarbonMultiplier
     if hasattr(card, "Pollution"):
         Pollution += card.Pollution
     if hasattr(card, "CarbonAddSoil"):
@@ -99,7 +97,7 @@ Bot = Player("Industry", [], 0, False)
 EnvironmentCardList = Cards.EnvironmentCardList
 
 # Load and scale images
-TitleScreen = pygame.image.load('Title Screen Layout.png')
+TitleScreen = pygame.image.load('TitleScreen.png')
 TitleScreen = pygame.transform.scale(TitleScreen, (1000, 750))
 TeamSelectScreen = pygame.image.load('TeamSelect.png')
 TeamSelectScreen = pygame.transform.scale(TeamSelectScreen, (1000, 750))
@@ -143,25 +141,28 @@ while True:
             if event.button == 1:  # Left mouse button
                 if not Game and not TeamSelect:
                     if teambutton.collidepoint(event.pos):
+                        pygame.draw.rect(GameDisplay, RED, teambutton)
                         print('Team Select clicked.')
                         TeamSelect = True
                     elif playbutton.collidepoint(event.pos):
+                        pygame.draw.rect(GameDisplay, RED, playbutton)
                         print('Play clicked.')
-                        if Player1.Team == "None":
+                        if Player1.Team == "Environment":
                             Team = random.randint(1, 2)
                             if Team == 1:
-                                Player1.Team = "Enviroment"
+                                Player1.Team = "Environment"
                                 Bot.Team = "Industry"
                             elif Team == 2:
                                 Player1.Team = "Industry"
-                                Bot.Team = "Enviroment"
+                                Bot.Team = "Environment"
                         Game = True
                     elif cardbutton.collidepoint(event.pos):
+                        pygame.draw.rect(GameDisplay, RED, cardbutton)
                         print('Cards clicked.')
                 elif TeamSelect:
                     if EnvironmentTeam.collidepoint(event.pos):
                         print('Environment Team selected.')
-                        Player1.Team = "Enviroment"
+                        Player1.Team = "Environment"
                         Bot.Team = "Industry"
                         Game = True
                         TeamSelect = False
@@ -223,7 +224,6 @@ while True:
             Bot.Points += 2
             Bot.GetCards()
             print("Bot Cards:", Bot.Cards)
-            # --- Bot logic ---
             affordable_cards = [card for card in Bot.Cards if hasattr(card, "cost") and Bot.Points >= card.cost]
             if affordable_cards:
                 if Bot.Team == "Industry":
@@ -241,9 +241,39 @@ while True:
             Player1.CardsDrawn = False
         if Carbon >= 50 and Nitrogen >= 25 and Phosphorus >= 10 and Player1.Team == "Environment":
             print("You win!")
+            last_played_card = None
+            Player1.Cards = []
+            Player1.Points = 0
+            Bot.Cards = []
+            Bot.Points = 0
+            Player1.CardsDrawn = False
+            Bot.CardsDrawn = False
+            NitrogenFixation = False
+            NitrogenMultiplier = 1
+            PhosphorusMultiplier = 1
+            CarbonMultiplier = 1
+            Nitrogen = 0
+            Phosphorus = 0
+            Carbon = 0
+            Pollution = 0
             Game = False
         elif Pollution >= 50 and Player1.Team == "Industry":
             print("You Win!")
+            last_played_card = None
+            Player1.Cards = []
+            Player1.Points = 0
+            Bot.Cards = []
+            Bot.Points = 0
+            Player1.CardsDrawn = False
+            Bot.CardsDrawn = False
+            NitrogenFixation = False
+            NitrogenMultiplier = 1
+            PhosphorusMultiplier = 1
+            CarbonMultiplier = 1
+            Nitrogen = 0
+            Phosphorus = 0
+            Carbon = 0
+            Pollution = 0
             Game = False
         elif Pollution >= 50 and Player1.Team == "Environment":
             print("You lose!")

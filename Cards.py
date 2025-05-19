@@ -40,7 +40,7 @@ class EnvironmentCards:
         NitrogenMultiplier = 2
         PhosphorusMultiplier = 2
         CarbonMultiplier = 2
-        Pollution = -2
+        Pollution = -3
         Duration = 5
         CardType = "Organism"
 
@@ -51,7 +51,7 @@ class EnvironmentCards:
         cost = 2
         image_path = "CardTextures/Photosynthesis.png"
         AllowsNitrogenFixation = False
-        CarbonAddSoil = 2
+        CarbonAddSoil = 5
         Pollution = -2
         NitrogenMultiplier = 1
         PhosphorusMultiplier = 1
@@ -66,9 +66,9 @@ class EnvironmentCards:
         cost = 3
         image_path = "CardTextures/Weathering.png"
         AllowsNitrogenFixation = False
-        CarbonAddSoil = 3
-        NitrogenAddSoil = 3
-        PhosAddSoil = 3
+        CarbonAddSoil = 4
+        NitrogenAddSoil = 4
+        PhosAddSoil = 4
         NitrogenMultiplier = 1
         PhosphorusMultiplier = 1
         CarbonMultiplier = 1
@@ -82,9 +82,9 @@ class EnvironmentCards:
         cost = 1
         image_path = "CardTextures/AnimalWaste.png"
         AllowsNitrogenFixation = False
-        CarbonAddSoil = 2
+        CarbonAddSoil = 3
         NitrogenAddSoil = 0
-        PhosAddSoil = 3
+        PhosAddSoil = 2
         NitrogenMultiplier = 1
         PhosphorusMultiplier = 1
         CarbonMultiplier = 1
@@ -98,7 +98,7 @@ class EnvironmentCards:
         cost = 2
         image_path = "CardTextures/CarbonUptake.png"
         AllowsNitrogenFixation = False
-        CarbonAddSoil = 2
+        CarbonAddSoil = 3
         NitrogenAddSoil = 0
         PhosAddSoil = 0
         Pollution = -2
@@ -115,7 +115,7 @@ class EnvironmentCards:
         cost = 3
         image_path = "CardTextures/Sequestration.png"
         AllowsNitrogenFixation = False
-        CarbonAddSoil = 5
+        CarbonAddSoil = 6
         NitrogenAddSoil = 0
         PhosAddSoil = 0
         Pollution = -2
@@ -134,7 +134,7 @@ class EnvironmentCards:
         AllowsNitrogenFixation = False
         CarbonAddSoil = 0
         NitrogenAddSoil = 4
-        PhosAddSoil = 1
+        PhosAddSoil = 2
         NitrogenMultiplier = 1
         PhosphorusMultiplier = 1
         CarbonMultiplier = 1
@@ -148,7 +148,7 @@ class EnvironmentCards:
         cost = 2
         image_path = "CardTextures/MethaneRelease.png"
         AllowsNitrogenFixation = False
-        CarbonAddSoil = 3
+        CarbonAddSoil = 5
         NitrogenAddSoil = 0
         PhosAddSoil = 1
         NitrogenMultiplier = 1
