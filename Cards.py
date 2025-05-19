@@ -4,329 +4,274 @@ import matplotlib as mpl
 import time
 
 pygame.init()
-#pygame.font.init()
-#testfont = pygame.font.SysFont("mono", 25)
 
+class EnvironmentCards:
 
+    class MicrobeCard:
+        id = 1
+        name = "Soil Microbe"
+        description = "Allows Nitrogen Fixation, lasts for a long time."
+        cost = 1
+        image_path = "CardTextures/Microbe.png"
+        AllowsNitrogenFixation = True
+        NitrogenMultiplier = 1
+        Duration = 9999
+        CardType = "Organism"
 
-class Template():
-    def __init__(self, id, name, description, cost, image_path, AllowsNitrogenFixation,CarbonAddSoil,NitrogenAddSoil, PhosAddSoil, CarbonMultiplier, NitrogenMultiplier, PhosphorusMultiplier, CardType):
-        self.name = "Template"
-        self.id = 999
-        self.description = "Put description here."
-        self.cost = 1
-        self.image = pygame.image.load(image_path)
-        self.image = pygame.transform.scale(self.image, (100, 150))
-        self.AllowsNitrogenFixation = False
-        self.CarbonAddSoil = 0
-        self.NitrogenAddSoil = 0
-        self.PhosAddSoil = 0
-        self.NitrogenMultiplier = 1
-        self.PhosphorusMultiplier = 1
-        self.CarbonMultiplier = 1
-        self.Duration = 1
-        self.CardType = "Template"
+    class LightningCard:
+        id = 2
+        name = "Lightning Storm"
+        description = "Weather event that boosts nitrogen fixation and phosphorus avalibility for a short time."
+        cost = 3
+        image_path = "CardTextures/Lightning.png"
+        AllowsNitrogenFixation = True
+        NitrogenMultiplier = 3
+        PhosphorusMultiplier = 1.5
+        Duration = 2
+        CardType = "Event"
 
+    class Decomposition:
+        id = 3
+        name = "Decomposition"
+        description = "Decomposes organic matter, releasing nutrients. Doubles all nutrient production for a short while."
+        cost = 2
+        image_path = "CardTextures/Decomposition.png"
+        AllowsNitrogenFixation = True
+        NitrogenMultiplier = 2
+        PhosphorusMultiplier = 2
+        CarbonMultiplier = 2
+        Pollution = -2
+        Duration = 5
+        CardType = "Organism"
 
-class EnviromentCards:
+    class Photosynthesis:
+        id = 4
+        name = "Photosynthesis"
+        description = "Plants convert Carbon Dioxide, Water, and Sunlight into Oxygen and Glucose. Adds carbon to the soil"
+        cost = 2
+        image_path = "CardTextures/Photosynthesis.png"
+        AllowsNitrogenFixation = False
+        CarbonAddSoil = 2
+        Pollution = -2
+        NitrogenMultiplier = 1
+        PhosphorusMultiplier = 1
+        CarbonMultiplier = 1
+        Duration = 1
+        CardType = "Process"
 
-    class MicrobeCard():
-        def __init__(self, id, name, description, cost, image_path, AllowsNitrogenFixation, NitrogenMultiplier, Duration, CardType):
-            self.id = 1
-            self.name = "Soil Microbe"
-            self.description = "Allows Nitrogen Fixation, lasts for a long time."
-            self.cost = 1
-            self.image = pygame.image.load("CardTextures/Microbe.png")
-            self.image = pygame.transform.scale(self.image, (100, 150))
-            self.AllowsNitrogenFixation = True
-            self.NitrogenMultiplier = 1
-            self.Duration = 9999
-            self.CardType = "Organism"
+    class Weathering:
+        id = 5
+        name = "Weathering and Erosion"
+        description = "Rocks and minerals break down to release nutrients."
+        cost = 3
+        image_path = "CardTextures/Weathering.png"
+        AllowsNitrogenFixation = False
+        CarbonAddSoil = 3
+        NitrogenAddSoil = 3
+        PhosAddSoil = 3
+        NitrogenMultiplier = 1
+        PhosphorusMultiplier = 1
+        CarbonMultiplier = 1
+        Duration = 1
+        CardType = "Process"
 
-    class LightningCard():
-        def __init__(self, id, name, description, cost, image_path, AllowsNitrogenFixation, NitrogenMultiplier, PhosphorusMultiplier, Duration, CardType):
-            self.name = "Lightning Storm"
-            self.id = 2
-            self.description = "Weather event that boosts nitrogen fixation and phosphorus avalibility for a short time."
-            self.cost = 3
-            self.image = pygame.image.load("CardTextures/Lightning.png")
-            self.image = pygame.transform.scale(self.image, (100, 150))
-            self.AllowsNitrogenFixation = True
-            self.NitrogenMultiplier = 3
-            self.PhosphorusMultiplier = 1.5
-            self.Duration = 2
-            self.CardType = "Event"
-            
-    class Decomposition():
-        def __init__(self, id, name, description, cost, image_path, AllowsNitrogenFixation, CarbonMultiplier, NitrogenMultiplier, PhosphorusMultiplier, Pollution, CardType):
-            self.name = "Decomposition"
-            self.id = 3
-            self.description = "Decomposes organic matter, releasing nutrients. Doubles all nutrient production for a short while."
-            self.cost = 2
-            self.image = pygame.image.load("CardTextures/Decomposition.png")
-            self.image = pygame.transform.scale(self.image, (100, 150))
-            self.AllowsNitrogenFixation = True
-            self.NitrogenMultiplier = 2
-            self.PhosphorusMultiplier = 2
-            self.CarbonMultiplier = 2
-            self.Pollution = -2
-            self.Duration = 5
-            self.CardType = "Organism"
+    class AnimalWaste:
+        id = 6
+        name = "Animal Waste"
+        description = "Animal waste adds nutrients to the soil."
+        cost = 1
+        image_path = "CardTextures/AnimalWaste.png"
+        AllowsNitrogenFixation = False
+        CarbonAddSoil = 2
+        NitrogenAddSoil = 0
+        PhosAddSoil = 3
+        NitrogenMultiplier = 1
+        PhosphorusMultiplier = 1
+        CarbonMultiplier = 1
+        Duration = 1
+        CardType = "Organism"
 
-    class Photosynthesis():
-        def __init__(self, id, name, description, cost, image_path, AllowsNitrogenFixation, CarbonAddSoil, Pollution, CarbonMultiplier, NitrogenMultiplier, PhosphorusMultiplier, CardType):
-            self.name = "Photosynthesis"
-            self.id = 4
-            self.description = "Plants convert Carbon Dioxide, Water, and Sunlight into Oxygen and Glucose. Adds carbon to the soil"
-            self.cost = 2
-            self.image = pygame.image.load("CardTextures/Photosynthesis.png")
-            self.image = pygame.transform.scale(self.image, (100, 150))
-            self.AllowsNitrogenFixation = False
-            self.CarbonAddSoil = 2
-            self.Pollution = -2
-            self.NitrogenMultiplier = 1
-            self.PhosphorusMultiplier = 1
-            self.CarbonMultiplier = 1
-            self.Duration = 1
-            self.CardType = "Process"
+    class CarbonUptake:
+        id = 7
+        name = "Carbon Uptake"
+        description = "Plants and animals take up carbon either from the soil or carbon-rich food."
+        cost = 2
+        image_path = "CardTextures/CarbonUptake.png"
+        AllowsNitrogenFixation = False
+        CarbonAddSoil = 2
+        NitrogenAddSoil = 0
+        PhosAddSoil = 0
+        Pollution = -2
+        NitrogenMultiplier = 1
+        PhosphorusMultiplier = 1
+        CarbonMultiplier = 1
+        Duration = 1
+        CardType = "Process"
 
-    class Weathering():
-        def __init__(self, id, name, description, cost, image_path, AllowsNitrogenFixation, CarbonAddSoil, NitrogenAddSoil,PhosAddSoil, CarbonMultiplier, NitrogenMultiplier, PhosphorusMultiplier, CardType):
-            self.name = "Weathering and Erosion"
-            self.id = 5
-            self.description = "Rocks and minerals break down to release nutrients."
-            self.cost = 3
-            self.image = pygame.image.load("CardTextures/Weathering.png")
-            self.image = pygame.transform.scale(self.image, (100, 150))
-            self.AllowsNitrogenFixation = False
-            self.CarbonAddSoil = 3
-            self.NitrogenAddSoil = 3
-            self.PhosAddSoil = 3
-            self.NitrogenMultiplier = 1
-            self.PhosphorusMultiplier = 1
-            self.CarbonMultiplier = 1
-            self.Duration = 1
-            self.CardType = "Process"
+    class Sequestration:
+        id = 8
+        name = "Carbon Sequestration"
+        description = "Plants take up carbon from the atmosphere and store it in the soil."
+        cost = 3
+        image_path = "CardTextures/Sequestration.png"
+        AllowsNitrogenFixation = False
+        CarbonAddSoil = 5
+        NitrogenAddSoil = 0
+        PhosAddSoil = 0
+        Pollution = -2
+        NitrogenMultiplier = 1
+        PhosphorusMultiplier = 1
+        CarbonMultiplier = 1.2
+        Duration = 3
+        CardType = "Process"
 
-    class AnimalWaste():
-        def __init__(self, id, name, description, cost, image_path, AllowsNitrogenFixation,CarbonAddSoil,NitrogenAddSoil, PhosAddSoil, CarbonMultiplier, NitrogenMultiplier, PhosphorusMultiplier, CardType):
-            self.name = "Animal Waste"
-            self.id = 6
-            self.description = "Animal waste adds nutrients to the soil."
-            self.cost = 1
-            self.image = pygame.image.load("CardTextures/AnimalWaste.png")
-            self.image = pygame.transform.scale(self.image, (100, 150))
-            self.AllowsNitrogenFixation = False
-            self.CarbonAddSoil = 0
-            self.NitrogenAddSoil = 0
-            self.PhosAddSoil = 3
-            self.NitrogenMultiplier = 1
-            self.PhosphorusMultiplier = 1
-            self.CarbonMultiplier = 1
-            self.Duration = 1
-            self.CardType = "Organism"
+    class NiceFertilizer:
+        id = 9
+        name = "Correct Fertilization"
+        description = "Good fertilization techniques increase nitrogen and phosphorus in the soil."
+        cost = 4
+        image_path = "CardTextures/GoodFertilizer.png"
+        AllowsNitrogenFixation = False
+        CarbonAddSoil = 0
+        NitrogenAddSoil = 4
+        PhosAddSoil = 1
+        NitrogenMultiplier = 1
+        PhosphorusMultiplier = 1
+        CarbonMultiplier = 1
+        Duration = 1
+        CardType = "Process"
 
-    class CarbonUptake():
-        def __init__(self, id, name, description, cost, image_path, AllowsNitrogenFixation,CarbonAddSoil,NitrogenAddSoil, PhosAddSoil, Pollution, CarbonMultiplier, NitrogenMultiplier, PhosphorusMultiplier, CardType):
-            self.name = "Carbon Uptake"
-            self.id = 7
-            self.description = "Plants and animals take up carbon either from the soil or carbon-rich food."
-            self.cost = 2
-            self.image = pygame.image.load("CardTextures/CarbonUptake.png")
-            self.image = pygame.transform.scale(self.image, (100, 150))
-            self.AllowsNitrogenFixation = False
-            self.CarbonAddSoil = 2
-            self.NitrogenAddSoil = 0
-            self.PhosAddSoil = 0
-            self.Pollution = -2
-            self.NitrogenMultiplier = 1
-            self.PhosphorusMultiplier = 1
-            self.CarbonMultiplier = 1
-            self.Duration = 1
-            self.CardType = "Process"
+    class Methane:
+        id = 10
+        name = "Methane Release"
+        description = "Animals release methane into the atmosphere but add carbon to the soil. Methane is a more potent greenhouse gas than CO2."
+        cost = 2
+        image_path = "CardTextures/MethaneRelease.png"
+        AllowsNitrogenFixation = False
+        CarbonAddSoil = 3
+        NitrogenAddSoil = 0
+        PhosAddSoil = 1
+        NitrogenMultiplier = 1
+        PhosphorusMultiplier = 1
+        CarbonMultiplier = 1
+        Duration = 1
+        CardType = "Organism"
 
-    class Sequestration():
-        def __init__(self, id, name, description, cost, image_path, AllowsNitrogenFixation,CarbonAddSoil,NitrogenAddSoil, PhosAddSoil, Pollution, CarbonMultiplier, NitrogenMultiplier, PhosphorusMultiplier, CardType):
-            self.name = "Carbon Sequestration"
-            self.id = 8
-            self.description = "Plants take up carbon from the atmosphere and store it in the soil."
-            self.cost = 3
-            self.image = pygame.image.load(image_path)
-            self.image = pygame.transform.scale(self.image, (100, 150))
-            self.AllowsNitrogenFixation = False
-            self.CarbonAddSoil = 5
-            self.NitrogenAddSoil = 0
-            self.PhosAddSoil = 0
-            self.Pollution = -2
-            self.NitrogenMultiplier = 1
-            self.PhosphorusMultiplier = 1
-            self.CarbonMultiplier = 1.2
-            self.Duration = 3
-            self.CardType = "Process"
-
-    class NiceFertilizer():
-        def __init__(self, id, name, description, cost, image_path, AllowsNitrogenFixation,CarbonAddSoil,NitrogenAddSoil, PhosAddSoil, CarbonMultiplier, NitrogenMultiplier, PhosphorusMultiplier, CardType):
-            self.name = "Correct Fertilization"
-            self.id = 9
-            self.description = "Good fertilization techniques increase nitrogen and phosphorus in the soil."
-            self.cost = 4
-            self.image = pygame.image.load(image_path)
-            self.image = pygame.transform.scale(self.image, (100, 150))
-            self.AllowsNitrogenFixation = False
-            self.CarbonAddSoil = 0
-            self.NitrogenAddSoil = 4
-            self.PhosAddSoil = 1
-            self.NitrogenMultiplier = 1
-            self.PhosphorusMultiplier = 1
-            self.CarbonMultiplier = 1
-            self.Duration = 1
-            self.CardType = "Process"
-
-    class Methane():
-        def __init__(self, id, name, description, cost, image_path, AllowsNitrogenFixation,CarbonAddSoil,NitrogenAddSoil, PhosAddSoil, CarbonMultiplier, NitrogenMultiplier, PhosphorusMultiplier, CardType):
-            self.name = "Methane Release"
-            self.id = 10
-            self.description = "Animals release methane into the atmosphere but add carbon to the soil. Methane is a more potent greenhouse gas than CO2."
-            self.cost = 2
-            self.image = pygame.image.load(image_path)
-            self.image = pygame.transform.scale(self.image, (100, 150))
-            self.AllowsNitrogenFixation = False
-            self.CarbonAddSoil = 3
-            self.NitrogenAddSoil = 0
-            self.PhosAddSoil = 0
-            self.NitrogenMultiplier = 1
-            self.PhosphorusMultiplier = 1
-            self.CarbonMultiplier = 1
-            self.Duration = 1
-            self.CardType = "Organism"
-
-EnviromentCardList = [
-    EnviromentCards.MicrobeCard,
-    EnviromentCards.LightningCard,
-    EnviromentCards.Decomposition,
-    EnviromentCards.Photosynthesis,
-    EnviromentCards.Weathering,
-    EnviromentCards.AnimalWaste,
-    EnviromentCards.CarbonUptake,
-    EnviromentCards.Sequestration,
-    EnviromentCards.NiceFertilizer,
-    EnviromentCards.Methane
+EnvironmentCardList = [
+    EnvironmentCards.MicrobeCard,
+    EnvironmentCards.LightningCard,
+    EnvironmentCards.Decomposition,
+    EnvironmentCards.Photosynthesis,
+    EnvironmentCards.Weathering,
+    EnvironmentCards.AnimalWaste,
+    EnvironmentCards.CarbonUptake,
+    EnvironmentCards.Sequestration,
+    EnvironmentCards.NiceFertilizer,
+    EnvironmentCards.Methane
 ]
 
 class IndustryCards:
 
-    class DenitrifyingBacteria():
-        def __init__(self, id, name, description, cost, image_path, AllowsNitrogenFixation,CarbonAddSoil,NitrogenAddSoil, PhosAddSoil, CarbonMultiplier, NitrogenMultiplier, PhosphorusMultiplier, CardType):
-            self.name = "Denitrifying Bacteria"
-            self.id = 11
-            self.description = "Denitrifying bacteria convert nitrates into nitrogen gas, reducing nitrogen in the soil."
-            self.cost = 2
-            self.image = pygame.image.load(image_path)
-            self.image = pygame.transform.scale(self.image, (100, 150))
-            self.AllowsNitrogenFixation = False
-            self.CarbonAddSoil = 0
-            self.NitrogenAddSoil = -2
-            self.PhosAddSoil = 0
-            self.NitrogenMultiplier = .75
-            self.PhosphorusMultiplier = 1
-            self.CarbonMultiplier = 1
-            self.Duration = 3
-            self.CardType = "Organism"
+    class DenitrifyingBacteria:
+        id = 11
+        name = "Denitrifying Bacteria"
+        description = "Denitrifying bacteria convert nitrates into nitrogen gas, reducing nitrogen in the soil."
+        cost = 2
+        image_path = "CardTextures/DeNitBacteria.png"
+        AllowsNitrogenFixation = False
+        CarbonAddSoil = 0
+        NitrogenAddSoil = -2
+        PhosAddSoil = 0
+        NitrogenMultiplier = .75
+        PhosphorusMultiplier = 1
+        CarbonMultiplier = 1
+        Duration = 3
+        CardType = "Organism"
 
-    class OverFertilizer():
-        def __init__(self, id, name, description, cost, image_path, AllowsNitrogenFixation,CarbonAddSoil,NitrogenAddSoil, PhosAddSoil, Pollution, CarbonMultiplier, NitrogenMultiplier, PhosphorusMultiplier, CardType):
-            self.name = "Over-Fertilization"
-            self.id = 12
-            self.description = "Over-fertilization can lead to nutrient runoff and pollution."
-            self.cost = 3
-            self.image = pygame.image.load(image_path)
-            self.image = pygame.transform.scale(self.image, (100, 150))
-            self.AllowsNitrogenFixation = False
-            self.CarbonAddSoil = -2
-            self.NitrogenAddSoil = 3
-            self.PhosAddSoil = 0
-            self.Pollution = 2
-            self.NitrogenMultiplier = 1
-            self.PhosphorusMultiplier = 1
-            self.CarbonMultiplier = 1
-            self.Duration = 1
-            self.CardType = "Process"
+    class OverFertilizer:
+        id = 12
+        name = "Over-Fertilization"
+        description = "Over-fertilization can lead to nutrient runoff and pollution."
+        cost = 3
+        image_path = "CardTextures/OverFertilizer.png"
+        AllowsNitrogenFixation = False
+        CarbonAddSoil = -2
+        NitrogenAddSoil = 3
+        PhosAddSoil = 0
+        Pollution = 2
+        NitrogenMultiplier = 1
+        PhosphorusMultiplier = 1
+        CarbonMultiplier = 1
+        Duration = 1
+        CardType = "Process"
 
-    class NOxPollute():
-        def __init__(self, id, name, description, cost, image_path, AllowsNitrogenFixation,CarbonAddSoil,NitrogenAddSoil, PhosAddSoil, Pollution, CarbonMultiplier, NitrogenMultiplier, PhosphorusMultiplier, CardType):
-            self.name = "NOx Pollution"
-            self.id = 13
-            self.description = "Nox pollution from industry can lead to acid rain and other environmental issues."
-            self.cost = 2
-            self.image = pygame.image.load(image_path)
-            self.image = pygame.transform.scale(self.image, (100, 150))
-            self.AllowsNitrogenFixation = False
-            self.CarbonAddSoil = 0
-            self.NitrogenAddSoil = 0
-            self.PhosAddSoil = 0
-            self.Pollution = 3
-            self.NitrogenMultiplier = 1
-            self.PhosphorusMultiplier = 1
-            self.CarbonMultiplier = 1
-            self.Duration = 1
-            self.CardType = "Process"
+    class NOxPollute:
+        id = 13
+        name = "NOx Pollution"
+        description = "Nox pollution from industry can lead to acid rain and other environmental issues."
+        cost = 2
+        image_path = "CardTextures/NOxPollute.png"
+        AllowsNitrogenFixation = False
+        CarbonAddSoil = 0
+        NitrogenAddSoil = 0
+        PhosAddSoil = 0
+        Pollution = 3
+        NitrogenMultiplier = 1
+        PhosphorusMultiplier = 1
+        CarbonMultiplier = 1
+        Duration = 1
+        CardType = "Process"
 
-    class Deforestation():
-        def __init__(self, id, name, description, cost, image_path, AllowsNitrogenFixation,CarbonAddSoil,NitrogenAddSoil, PhosAddSoil, Pollution, CarbonMultiplier, NitrogenMultiplier, PhosphorusMultiplier, CardType):
-            self.name = "Deforestation"
-            self.id = 14
-            self.description = "Deforestion reduces the ability of the ecosystem to sequester carbon and adds carbon to the atmosphere."
-            self.cost = 1
-            self.image = pygame.image.load(image_path)
-            self.image = pygame.transform.scale(self.image, (100, 150))
-            self.AllowsNitrogenFixation = False
-            self.CarbonAddSoil = -1
-            self.NitrogenAddSoil = 0
-            self.PhosAddSoil = 0
-            self.Pollution = 2
-            self.NitrogenMultiplier = 1
-            self.PhosphorusMultiplier = 1
-            self.CarbonMultiplier = 0.75
-            self.Duration = 1
-            self.CardType = "Process"
+    class Deforestation:
+        id = 14
+        name = "Deforestation"
+        description = "Deforestion reduces the ability of the ecosystem to sequester carbon and adds carbon to the atmosphere."
+        cost = 1
+        image_path = "CardTextures/Deforestation.png"
+        AllowsNitrogenFixation = False
+        CarbonAddSoil = -1
+        NitrogenAddSoil = 0
+        PhosAddSoil = 0
+        Pollution = 2
+        NitrogenMultiplier = 1
+        PhosphorusMultiplier = 1
+        CarbonMultiplier = 0.75
+        Duration = 1
+        CardType = "Process"
 
-    class Extraction():
-        def __init__(self, id, name, description, cost, image_path, AllowsNitrogenFixation,CarbonAddSoil,NitrogenAddSoil, PhosAddSoil, Pollution, CarbonMultiplier, NitrogenMultiplier, PhosphorusMultiplier, CardType):
-            self.name = "Extraction"
-            self.id = 15
-            self.description = "Extraction of natural resources leads to removal of carbon and nutrients from the soil."
-            self.cost = 2
-            self.image = pygame.image.load(image_path)
-            self.image = pygame.transform.scale(self.image, (100, 150))
-            self.AllowsNitrogenFixation = False
-            self.CarbonAddSoil = -1
-            self.NitrogenAddSoil = -1
-            self.PhosAddSoil = -1
-            self.Pollution = 2
-            self.NitrogenMultiplier = 1
-            self.PhosphorusMultiplier = 1
-            self.CarbonMultiplier = 1
-            self.Duration = 1
-            self.CardType = "Process"
+    class Extraction:
+        id = 15
+        name = "Extraction"
+        description = "Extraction of natural resources leads to removal of carbon and nutrients from the soil."
+        cost = 2
+        image_path = "CardTextures/Extraction.png"
+        AllowsNitrogenFixation = False
+        CarbonAddSoil = -1
+        NitrogenAddSoil = -1
+        PhosAddSoil = -1
+        Pollution = 2
+        NitrogenMultiplier = 1
+        PhosphorusMultiplier = 1
+        CarbonMultiplier = 1
+        Duration = 1
+        CardType = "Process"
 
-    class Pesticides():
-        def __init__(self, id, name, description, cost, image_path, AllowsNitrogenFixation,CarbonAddSoil,NitrogenAddSoil, PhosAddSoil, Pollution, CarbonMultiplier, NitrogenMultiplier, PhosphorusMultiplier, CardType):
-            self.name = "Pesticide Use"
-            self.id = 16
-            self.description = "Overuse of pesticides leads to pollution and loss of resources."
-            self.cost = 1
-            self.image = pygame.image.load(image_path)
-            self.image = pygame.transform.scale(self.image, (100, 150))
-            self.AllowsNitrogenFixation = False
-            self.CarbonAddSoil = -1
-            self.NitrogenAddSoil = -1
-            self.PhosAddSoil = -1
-            self.Pollution = 2
-            self.NitrogenMultiplier = 1
-            self.PhosphorusMultiplier = 1
-            self.CarbonMultiplier = 1
-            self.Duration = 1
-            self.CardType = "Process"
+    class Pesticides:
+        id = 16
+        name = "Pesticide Use"
+        description = "Overuse of pesticides leads to pollution and loss of resources."
+        cost = 1
+        image_path = "CardTextures/Pesticides.png"
+        AllowsNitrogenFixation = False
+        CarbonAddSoil = -1
+        NitrogenAddSoil = -1
+        PhosAddSoil = -1
+        Pollution = 2
+        NitrogenMultiplier = 1
+        PhosphorusMultiplier = 1
+        CarbonMultiplier = 1
+        Duration = 1
+        CardType = "Process"
 
 IndustryCardList = [
     IndustryCards.DenitrifyingBacteria,
@@ -337,7 +282,7 @@ IndustryCardList = [
     IndustryCards.Pesticides
     ]
 
-print("Enviroment Card List: ", EnviromentCardList)
+print("Environment Card List: ", EnvironmentCardList)
 print("Industry Card List: ", IndustryCardList)
-print("Enviroment Card List Length: ", len(EnviromentCardList))
+print("Environent Card List Length: ", len(EnvironmentCardList))
 print("Industry Card List Length: ", len(IndustryCardList))
